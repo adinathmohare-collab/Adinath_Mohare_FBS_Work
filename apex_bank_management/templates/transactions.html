@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <!-- Left Navigation Sidebar -->
+    <div class="col-md-3 mb-4">
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-primary text-white py-3">
+                <h5 class="mb-0 fw-semibold">Navigation</h5>
+            </div>
+            <div class="list-group list-group-flush">
+                <a href="{{ url_for('dashboard') }}" class="list-group-item list-group-item-action py-3">
+                    📊 Dashboard
+                </a>
+                <a href="{{ url_for('deposit') }}" class="list-group-item list-group-item-action py-3">
+                    💰 Deposit
+                </a>
+                <a href="{{ url_for('withdraw') }}" class="list-group-item list-group-item-action py-3">
+                    💸 Withdraw
+                </a>
+                <a href="{{ url_for('transfer') }}" class="list-group-item list-group-item-action py-3">
+                    🔄 Transfer
+                </a>
+                <a href="{{ url_for('transactions') }}" class="list-group-item list-group-item-action active fw-bold py-3">
+                    📜 Transaction History
+                </a>
+                <a href="{{ url_for('change_pin') }}" class="list-group-item list-group-item-action py-3">
+                    🔑 Change PIN
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Transaction History Table Area -->
+    <div class="col-md-9">
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-primary text-white py-3 d-flex justify-content-between align-items-center">
+                <h4 class="mb-0 fw-bold">Transaction History</h4>
+                <span class="badge bg-light text-primary fs-6">{{ transactions|length if transactions else 0 }} Total</span>
+            </div>
+            <div class="card-body p-4">
+                {% if transactions %}
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th scope="col">ID</th>
+                                <th scope="col">Type</th>
+                                <th scope="col">Amount</th>
+                                <th scope="col">Description</th>
+                                <th scope="col">Date & Time</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for tx in transactions %}
+                            <tr>
+                                <td class="fw-semibold">#{{ tx[0] }}</td>
+                                <td>
+                                    {% if tx[1] == 'DEPOSIT' %}
+                                        <span class="badge bg-success">DEPOSIT</span>
+                                    {% elif tx[1] == 'WITHDRAW' %}
+                                        <span class="badge bg-danger">WITHDRAW</span>
+                                    {% elif tx[1] == 'TRANSFER' %}
+                                        <span class="badge bg-info text-dark">TRANSFER</span>
+                                    {% else %}
+                                        <span class="badge bg-secondary">{{ tx[1] }}</span>
+                                    {% endif %}
+                                </td>
+                                <td class="fw-bold {% if tx[1] == 'DEPOSIT' %}text-success{% elif tx[1] == 'WITHDRAW' %}text-danger{% else %}text-primary{% endif %}">
+                                    {% if tx[1] == 'DEPOSIT' %}+{% elif tx[1] == 'WITHDRAW' %}-{% endif %}₹{{ "%.2f"|format(tx[2]) }}
+                                </td>
+                                <td class="text-muted">{{ tx[4] }}</td>
+                                <td class="text-muted small">{{ tx[3] }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div class="text-center py-5">
+                    <p class="text-muted fs-5 mb-0">No transactions found yet.</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

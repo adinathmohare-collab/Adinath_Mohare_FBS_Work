@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-5">
+        <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0">Change Account PIN</h4>
+            </div>
+            <div class="card-body">
+                <form action="{{ url_for('change_pin') }}" method="POST">
+                    <div class="mb-3">
+                        <label class="form-label">Current PIN</label>
+                        <input type="password" name="old_pin" maxlength="4" class="form-control" placeholder="Enter current PIN" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">New 4-Digit PIN</label>
+                        <input type="password" name="new_pin" maxlength="4" class="form-control" placeholder="Enter new 4-digit PIN" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Confirm New PIN</label>
+                        <input type="password" name="confirm_pin" maxlength="4" class="form-control" placeholder="Re-enter new PIN" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Update PIN</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

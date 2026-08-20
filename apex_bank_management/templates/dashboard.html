@@ -1,0 +1,145 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <!-- Left Navigation Sidebar -->
+    <div class="col-md-3 mb-4">
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-primary text-white py-3">
+                <h5 class="mb-0 fw-semibold">Navigation</h5>
+            </div>
+            <div class="list-group list-group-flush">
+                <a href="{{ url_for('dashboard') }}" class="list-group-item list-group-item-action active fw-bold">
+                    📊 Dashboard
+                </a>
+                <a href="{{ url_for('deposit') }}" class="list-group-item list-group-item-action py-3">
+                    💰 Deposit
+                </a>
+                <a href="{{ url_for('withdraw') }}" class="list-group-item list-group-item-action py-3">
+                    💸 Withdraw
+                </a>
+                <a href="{{ url_for('transfer') }}" class="list-group-item list-group-item-action py-3">
+                    🔄 Transfer
+                </a>
+                <a href="{{ url_for('transactions') }}" class="list-group-item list-group-item-action py-3">
+                    📜 Transaction History
+                </a>
+                <a href="{{ url_for('change_pin') }}" class="list-group-item list-group-item-action py-3">
+                    🔑 Change PIN
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content Area -->
+    <div class="col-md-9">
+        <!-- Welcome Hero Banner -->
+        <div class="card shadow-sm border-0 bg-white mb-4">
+            <div class="card-body p-4 d-flex align-items-center justify-content-between flex-wrap gap-3">
+                <div>
+                    <h3 class="fw-bold text-primary mb-1">Welcome back, {{ name }}!</h3>
+                    <p class="text-muted mb-0">Account ID: <strong class="text-dark">{{ session['account_id'] }}</strong></p>
+                </div>
+                <span class="badge bg-success-subtle text-success border border-success px-3 py-2 rounded-pill fs-6">
+                    ● Active Account
+                </span>
+            </div>
+        </div>
+
+        <!-- Quick Balance & Account Details Grid -->
+        <div class="row g-3 mb-4">
+            <!-- Balance Card -->
+            <div class="col-md-6">
+                <div class="card shadow-sm border-0 h-100">
+                    <div class="card-body p-4 text-center d-flex flex-column justify-content-center">
+                        <span class="text-muted fw-bold text-uppercase small tracking-wide">Available Balance</span>
+                        
+                        <div id="balanceDisplay" class="d-none my-3">
+                            <h2 class="display-6 text-success fw-bold font-monospace mb-0">₹{{ "%.2f"|format(balance) }}</h2>
+                        </div>
+
+                        <div class="mt-3">
+                            <button id="toggleBalanceBtn" class="btn btn-outline-primary px-4 rounded-pill" onclick="toggleBalance()">
+                                🔍 Check Balance
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Account Info Card -->
+            <div class="col-md-6">
+                <div class="card shadow-sm border-0 h-100">
+                    <div class="card-body p-4">
+                        <h6 class="text-muted fw-bold text-uppercase small mb-3">Account Overview</h6>
+                        <ul class="list-unstyled mb-0">
+                            <li class="d-flex justify-content-between py-2 border-bottom">
+                                <span class="text-muted">Account Type</span>
+                                <span class="fw-semibold">Savings Account</span>
+                            </li>
+                            <li class="d-flex justify-content-between py-2 border-bottom">
+                                <span class="text-muted">Branch</span>
+                                <span class="fw-semibold">Apex Main Branch</span>
+                            </li>
+                            <li class="d-flex justify-content-between py-2">
+                                <span class="text-muted">Status</span>
+                                <span class="text-success fw-semibold">KYC Verified</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Activity & Status Section -->
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+                <h6 class="mb-0 fw-bold text-secondary">Account Activity & Status</h6>
+                <a href="{{ url_for('transactions') }}" class="btn btn-sm btn-outline-primary rounded-pill">View All History</a>
+            </div>
+            <div class="card-body p-0">
+                <div class="list-group list-group-flush">
+                    <div class="list-group-item d-flex justify-content-between align-items-center py-3">
+                        <div class="d-flex align-items-center gap-3">
+                            <span class="fs-4">🛡️</span>
+                            <div>
+                                <h6 class="mb-0 fw-semibold">Account Security</h6>
+                                <small class="text-muted">Identity & Profile Verification</small>
+                            </div>
+                        </div>
+                        <span class="badge bg-success-subtle text-success border border-success px-2 py-1">Verified</span>
+                    </div>
+                    <div class="list-group-item d-flex justify-content-between align-items-center py-3">
+                        <div class="d-flex align-items-center gap-3">
+                            <span class="fs-4">🔑</span>
+                            <div>
+                                <h6 class="mb-0 fw-semibold">Authentication Method</h6>
+                                <small class="text-muted">4-Digit Security PIN</small>
+                            </div>
+                        </div>
+                        <small class="text-muted">Active</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+function toggleBalance() {
+    var display = document.getElementById("balanceDisplay");
+    var btn = document.getElementById("toggleBalanceBtn");
+
+    if (display.classList.contains("d-none")) {
+        display.classList.remove("d-none");
+        btn.innerText = "🙈 Hide Balance";
+        btn.classList.replace("btn-outline-primary", "btn-secondary");
+    } else {
+        display.classList.add("d-none");
+        btn.innerText = "🔍 Check Balance";
+        btn.classList.replace("btn-secondary", "btn-outline-primary");
+    }
+}
+</script>
+{% endblock %}
